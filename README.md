@@ -38,7 +38,7 @@ Pracoval jsem s následujícími podmínkami:
 
 
 ### High-level design
-- základní třídy: ICU, kontrolní systém, monitor, senzor, podpůrný stroj (supply machine) a pacient
+- základní třídy: ICU, Control system, Monitor, Sensor, Supply machine a Pacient
 - proto řešení je rozděleno do 7 souborů: [icu.maude](icu.maude), [control-system.maude](control-system.maude), [monitor.maude](monitor.maude), [sensor.maude](sensor.maude), [supply-machine.maude](supply-machine.maude), [patient.maude](patient.maude), [test.maude](test.maude)
 
 ### ICU
