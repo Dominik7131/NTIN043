@@ -57,7 +57,7 @@ fmod TEST is
     --- output: ControlSystem: controlSystem(1, "Test CS 1", patient(8201191471, "Jan Novak", 40),
     --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 9.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 0.0), safe)
     --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.5), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe))
-    --- => As we can see by status safe at monitor1 and safe at monitor2 (= last argument of operation monitorStatus) everything is fine
+    --- => As we can see by the status safe at monitor1 and safe at monitor2 (= last argument of operation monitorStatus) everything is fine
     --- => All supply machines are operating in the safe mode right now
 
     --- However now the oxygen sensor measured oxygen level below minimum and hydration sensor measured safe value
@@ -65,24 +65,24 @@ fmod TEST is
     eq testSensorMeasured1 = sensorUpdateMeasuredValue(testSensor1, 85.0) .
 
     op testSensorMeasured2 : -> Sensor .
-    eq testSensorMeasured2 = sensorUpdateMeasuredValue(testSensor2, 1.6) .
+    eq testSensorMeasured2 = sensorUpdateMeasuredValue(testSensor2, 1.7) .
 
     --- The sensor with ID 1 in control system with ID 1 in monitor with ID 1 gets updated
     op testICU1Updated1 : -> Icu .
     eq testICU1Updated1 = updateSensorInIcu(testICU1, 1, 1, 1, testSensorMeasured1) .
 
-    --- The sensor with ID 2 in control system with ID 1 in monitor with ID 1 gets updated
+    --- The sensor with ID 2 in control system with ID 1 in monitor with ID 2 gets updated
     op testICU1Updated2 : -> Icu .
-    eq testICU1Updated2 = updateSensorInIcu(testICU1Updated1, 1, 1, 1, testSensorMeasured1) .
+    eq testICU1Updated2 = updateSensorInIcu(testICU1Updated1, 1, 2, 2, testSensorMeasured2) .
 
     --- Check the status again
     op testCheckStatus2 : -> ControlSystem .
     eq testCheckStatus2 = checkControlSystem(getControlSystemFromICUByID(testICU1Updated2, 1)) .
 
     --- Output: ControlSystem: controlSystem(1, "Test CS 1", patient(8201191471, "Jan Novak", 40),
-    --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.5), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe)
-    --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 8.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 2.0e+1), critical))
-    --- => Now the second monitor got into critical state and the respecitve supply machine is operating in the critical mode
+    --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 8.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 2.0e+1), critical)
+    --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.7), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe))
+    --- => Now the first monitor got into critical state and the corresponding supply machine is operating in the critical mode
     --- => The first monitor is still in the safe mode
 
 
@@ -90,11 +90,12 @@ fmod TEST is
     --- Other operations overview:
     --- If our patient gets worse we can add a new sensor with operation "addSensor", add a new supply machine with operation "addSupplyMachine" 
     --- and add a new monitor with operation "addMonitor"
-    --- and for a new patient we can add new control system with operation "addControlSystem"
+
+    --- And for a new patient we can add new control system with operation "addControlSystem"
 
     --- If our patient gets better we can remove a sensor with operation "removeSensorFromMonitorByID", remove a supply machine
     --- with operation "removeSMachineFromMonitorByID", remove a monitor with operation "removeMonitorFromControlSystemByID"
-    --- and if our patient does not need intensive care unit anymore we can remove him with operation "removeControlSystemFromICUByID"
+    --- and if our patient does not need intensive care anymore we can remove him with operation "removeControlSystemFromICUByID"
 
     --- Control system can be updated using operations "updateSensorByID", "updateSupplyMachineByID", "updateMonitorByID" and "updateControlSystemByID"
 
