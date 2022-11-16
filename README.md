@@ -26,7 +26,7 @@ deadline: 23.11.2022
 
 ## Řešení
 
-### Vysvětlení klíčových rozhodnutí:
+### Vysvětlení klíčových rozhodnutí
 Pracoval jsem s následujícími podmínkami:
 - každá nemocnice může mít libovolný počet ICU
 - každá ICU má právě jeden kontrolní systém (control system) pro každého pacienta, u kterého má uložené údaje a parametry relevantní pro nastavování hranic měřených parametrů, ve kterých se má zdravý pacient pohybovat
