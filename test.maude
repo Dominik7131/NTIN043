@@ -83,7 +83,7 @@ fmod TEST is
     --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 8.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 2.0e+1), critical)
     --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.7), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe))
     --- => Now the first monitor got into critical state and the corresponding supply machine is operating in the critical mode
-    --- => The first monitor is still in the safe mode
+    --- => The second monitor is still in the safe mode
 
 
 
