@@ -20,7 +20,7 @@ fmod TEST is
 
     --- Create one sensor to control his oxygen level and one sensor to control his hydration and set the min and max bounds according
     --- to the patient parameters
-    --- Fictional values: Min: 90% oxygen level, Max: 100%, Measured value = 95 %
+    --- Fictional values: Min: 90% oxygen level, Max: 100%, Measured value: 95 %
     op testSensor1 : -> Sensor .
     eq testSensor1 = sensor(1, "Oxygen level sensor", 90.0, 100.0, 95.0) .
 
