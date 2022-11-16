@@ -24,7 +24,7 @@ deadline: 23.11.2022
 
 ===================
 
-## Řešení:
+## Řešení
 
 ### Vysvětlení klíčových rozhodnutí:
 Pracoval jsem s následujícími podmínkami:
