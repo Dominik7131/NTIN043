@@ -98,5 +98,5 @@ Obecný princip, který je vyžadován v zadání funguje následovně:
 ### Test
 - testový soubor se načítá příkazem `maude test.maude`
 - jednotlivé operace jsou spouštěny příkazy ve tvaru `rew "operace" .`, tedy například (`rew testICU1 .`)
-- v souboru je podrobně popsáno, jakým způsobem lze postupovat, když libovolná nemocnice obdrží nového pacienta ve vážném stavu
+- v souboru je podrobně popsáno, jakým způsobem lze postupovat, když nemocnice obdrží nového pacienta ve vážném stavu
 - potom následuje přehled užitečných operací a krátký přehled kontroly chyb
