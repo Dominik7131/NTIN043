@@ -29,7 +29,7 @@ SmartHome obsahuje tyto základní signatury:
 - `name` - identifikační název daného chytrého doplňku
 - `category` - do jaké kategorie doplňků spadá (Př.: kouřový detektor spadá do kategorie SensorCategory) \
 
-- seznam všech definovaných kategorií: LightingCategory, SensorCategory, CameraCategory, AlarmCategory, HeaterCategory
+- seznam všech definovaných kategorií: `LightingCategory`, `SensorCategory`, `CameraCategory`, `AlarmCategory`, `HeaterCategory`
 - některé doplňky mohou navíc obsahovat nějakou hodnotu (Př.: tepelné těleso obsahuje teplotu, na kterou daný pokoj vytápí)
 
 
