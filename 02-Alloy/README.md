@@ -34,6 +34,6 @@ SmartHome obsahuje tyto základní signatury:
 
 
 ## Pokročilé použití alloy
-- pro ověření správnosti našeho modelu používáme několik assertů a následných checků
+- pro ověření správnosti našeho modelu používáme několik assertů a odpovídajících checků
 - model obsahuje i dvě operace, které mění jeho stav: přidání nového pokoje (predikát `addRoom`) a přidání nového chytrého doplňku (predikát `addAccessory`)
 
