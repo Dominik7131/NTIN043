@@ -1,0 +1,38 @@
+fmod PATIENT is
+
+    protecting NAT .
+    protecting STRING .
+
+    sort Patient PatientID PatientName PatientAge .
+
+    subsort Nat < PatientID .
+    subsort Nat < PatientAge .
+    subsort String < PatientName .
+
+    var PATIENT1 : Patient .
+    vars PATIENTID1 PATIENTID2 : PatientID .
+    vars PATIENTNAME1 PATIENTNAME2 : PatientName .
+    vars PATIENTAGE1 PATIENTAGE2 : PatientAge .
+
+    op patient : PatientID PatientName PatientAge -> Patient .
+
+    --- Basic patient getters and setters
+    op getID : Patient -> PatientID .
+    eq getID(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1)) = PATIENTID1 .
+
+    op setID : Patient PatientID -> Patient .
+    eq setID(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1), PATIENTID2) = patient(PATIENTID2, PATIENTNAME1, PATIENTAGE1) .
+
+    op getName : Patient -> PatientName .
+    eq getName(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1)) = PATIENTNAME1 .
+
+    op setName : Patient PatientName -> Patient .
+    eq setName(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1), PATIENTNAME2) = patient(PATIENTID1, PATIENTNAME2, PATIENTAGE1) .
+
+    op getAge : Patient -> PatientAge .
+    eq getAge(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1)) = PATIENTAGE1 .
+
+    op setAge : Patient PatientAge -> Patient .
+    eq setAge(patient(PATIENTID1, PATIENTNAME1, PATIENTAGE1), PATIENTAGE2) = patient(PATIENTID1, PATIENTNAME1, PATIENTAGE2) .
+
+endfm

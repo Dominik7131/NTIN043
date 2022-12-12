@@ -1,0 +1,115 @@
+load icu.maude .
+
+
+fmod TEST is
+
+    protecting NAT .
+    protecting STRING .
+    extending ICU .
+    extending CONTROLSYSTEM .
+    extending MONITOR .
+    extending SUPPLYMACHINE .
+    extending SENSOR .
+    extending PATIENT .
+
+
+    --- Real hospital test scenario: a new patient is transfered to the hospital and has issues with breathing and staying hydrated:
+    --- Create info about the new patient
+    op testPatient1 : -> Patient .
+    eq testPatient1 = patient(8201191471, "Jan Novak", 40) .
+
+    --- Create one sensor to control his oxygen level and one sensor to control his hydration and set the min and max bounds according
+    --- to the patient parameters
+    --- Fictional values: Min: 90% oxygen level, Max: 100%, Measured value: 95 %
+    op testSensor1 : -> Sensor .
+    eq testSensor1 = sensor(1, "Oxygen level sensor", 90.0, 100.0, 95.0) .
+
+    --- Fictional values: Min: 1 unit, Max: 2 units, Measured value = 1.5 units
+    op testSensor2 : -> Sensor .
+    eq testSensor2 = sensor(2, "Hydration sensor", 1.0, 2.0, 1.5) .
+
+    --- Create one machine to supply oxygen and one to supply water if needed
+    op testSupplyMachine1 : -> SupplyMachine .
+    eq testSupplyMachine1 = supplyMachine(1, "Air supply", 0.0, 20.0, 0.0) .
+
+    op testSupplyMachine2 : -> SupplyMachine .
+    eq testSupplyMachine2 = supplyMachine(1, "Water supply", 0.0, 1.0, 0.0) .
+
+    --- Connect corresponding sensors with their supply machines into monitors
+    op testMonitor1 : -> Monitor .
+    eq testMonitor1 = monitor(1, "Oxygen monitor", testSensor1, testSupplyMachine1) .
+
+    op testMonitor2 : -> Monitor .
+    eq testMonitor2 = monitor(2, "Hydration monitor", testSensor2, testSupplyMachine2) .
+
+    --- Connect monitors to the control system so all information are available at one place
+    op testControlSystem1 : -> ControlSystem .
+    eq testControlSystem1 = controlSystem(1, "Test CS 1", testPatient1, testMonitor1 testMonitor2) .
+
+    --- Now assign the patient to the "Critical care unit" with control system made exactly for his needs
+    op testICU1 : -> Icu .
+    eq testICU1 = icu(1, "Critical care unit", testControlSystem1) .
+
+    --- Show the current status of the control system
+    op testCheckStatus1 : -> ControlSystem .
+    eq testCheckStatus1 = checkControlSystem(getControlSystemFromICUByID(testICU1, 1)) .
+
+    --- output: ControlSystem: controlSystem(1, "Test CS 1", patient(8201191471, "Jan Novak", 40),
+    --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 9.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 0.0), safe)
+    --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.5), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe))
+    --- => As we can see by the status safe at monitor1 and safe at monitor2 (= last argument of operation monitorStatus) everything is fine
+    --- => All supply machines are operating in the safe mode right now
+
+    --- However now the oxygen sensor measured oxygen level below minimum and hydration sensor measured safe value
+    op testSensorMeasured1 : -> Sensor .
+    eq testSensorMeasured1 = sensorUpdateMeasuredValue(testSensor1, 85.0) .
+
+    op testSensorMeasured2 : -> Sensor .
+    eq testSensorMeasured2 = sensorUpdateMeasuredValue(testSensor2, 1.7) .
+
+    --- The sensor with ID 1 in control system with ID 1 in monitor with ID 1 gets updated
+    op testICU1Updated1 : -> Icu .
+    eq testICU1Updated1 = updateSensorInIcu(testICU1, 1, 1, 1, testSensorMeasured1) .
+
+    --- The sensor with ID 2 in control system with ID 1 in monitor with ID 2 gets updated
+    op testICU1Updated2 : -> Icu .
+    eq testICU1Updated2 = updateSensorInIcu(testICU1Updated1, 1, 2, 2, testSensorMeasured2) .
+
+    --- Check the status again
+    op testCheckStatus2 : -> ControlSystem .
+    eq testCheckStatus2 = checkControlSystem(getControlSystemFromICUByID(testICU1Updated2, 1)) .
+
+    --- Output: ControlSystem: controlSystem(1, "Test CS 1", patient(8201191471, "Jan Novak", 40),
+    --- monitorStatus(1, "Oxygen monitor", sensor(1, "Oxygen level sensor", 9.0e+1, 1.0e+2, 8.5e+1), supplyMachine(1, "Air supply", 0.0, 2.0e+1, 2.0e+1), critical)
+    --- monitorStatus(2, "Hydration monitor", sensor(2, "Hydration sensor", 1.0, 2.0, 1.7), supplyMachine(1, "Water supply", 0.0, 1.0, 0.0), safe))
+    --- => Now the first monitor got into critical state and the corresponding supply machine is operating in the critical mode
+    --- => The second monitor is still in the safe mode
+
+
+
+    --- Other operations overview:
+    --- If our patient gets worse we can add a new sensor with operation "addSensor", add a new supply machine with operation "addSupplyMachine" 
+    --- and add a new monitor with operation "addMonitor"
+
+    --- And for a new patient we can add new control system with operation "addControlSystem"
+
+    --- If our patient gets better we can remove a sensor with operation "removeSensorFromMonitorByID", remove a supply machine
+    --- with operation "removeSMachineFromMonitorByID", remove a monitor with operation "removeMonitorFromControlSystemByID"
+    --- and if our patient does not need intensive care anymore we can remove him with operation "removeControlSystemFromICUByID"
+
+    --- Control system can be updated using operations "updateSensorByID", "updateSupplyMachineByID", "updateMonitorByID" and "updateControlSystemByID"
+
+
+
+    --- Error checking overview:
+    --- If we create an invalid sensor with bounds Min > Max we get an sensor error:
+    op testInvalidSensor : -> Sensor .
+    eq testInvalidSensor = sensor(1, "Invalid sensor", 10.0, 0.0, 0.0) .
+    --- Output: Sensor: sensorError("Min bound > Max bound")
+
+    --- If we try to get a non existing item we will get a corresponding error
+    op testInvalidGetControlSystem : -> ControlSystem .
+    eq testInvalidGetControlSystem = getControlSystemFromICUByID(testICU1, 404) .
+    --- Output: ControlSystem: controlSystemError("Control system not found")
+
+endfm
