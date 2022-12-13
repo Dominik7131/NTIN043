@@ -20,12 +20,15 @@ sig Controller {
 
 abstract sig Accessory {
 	name : one Name,
-	category: one AccessoryCategory
+	category : one AccessoryCategory,
+	state : one State
 }
 
 abstract sig AccessoryCategory {}
 
-abstract sig AccessoryValue {}
+abstract sig State {}
+
+abstract sig CameraBool {}
 
 one sig LightingCategory extends AccessoryCategory {}
 one sig SensorCategory extends AccessoryCategory {}
@@ -33,18 +36,22 @@ one sig CameraCategory extends AccessoryCategory {}
 one sig AlarmCategory extends AccessoryCategory {}
 one sig HeaterCategory extends AccessoryCategory {}
 
-sig LightValue extends AccessoryValue {}
-sig HeatValue extends AccessoryValue {}
+one sig StateOn extends State {}
+one sig StateOff extends State {}
+
+one sig True extends CameraBool {}
+one sig False extends CameraBool {}
 
 sig Lightbulb extends Accessory {
-	lightIntensity : one LightValue
+	lightIntensity : one Int
 }
-sig Heater extends Accessory {
-	heatingIntensity : one HeatValue 
+sig TemperatureSensor extends Accessory {
+	temperature : one Int
 }
-sig TemperatureSensor extends Accessory {}
-sig SmokeSensor extends Accessory {}
-sig Camera extends Accessory {}
+sig Camera extends Accessory {
+	isMovementDetected : one CameraBool
+}
+sig Heater extends Accessory {}
 sig Alarm extends Accessory {}
 
 
@@ -82,29 +89,23 @@ fact { all c : Controller | some h : House | c = h.controller }
 // Every accessory is managed by some controller
 fact { all a : Accessory | some c : Controller | a in c.managedAccessories }
 
+// Every State belongs to some accessory
+fact { all s : State | some a : Accessory | s in a.state }
+
+// Every CameraBool belongs to some camera
+fact { all b : CameraBool | some c : Camera | b in c.isMovementDetected}
+
+// Lightbulb intensity is always a non negative number
+fact {all l : Lightbulb | l.lightIntensity > 0}
+
 // Every accessory category belongs to some accessory
 fact { all c : AccessoryCategory | some a : Accessory | a.category = c }
-
-// Every light intensity belongs to some lightbulb
-fact { all lv : LightValue | some l : Lightbulb | l.lightIntensity = lv}
-
-// Every light intensity belongs to a different lightbulb
-fact { all l1 : Lightbulb, l2 : Lightbulb | l1.lightIntensity = l2.lightIntensity =>  l1 = l2 }
-
-// Every heat intensity belongs to some lightbulb
-fact {all hv : HeatValue | some h : Heater | h.heatingIntensity = hv}
-
-// Every heat intensity belongs to a different heater
-fact { all h1 : Heater, h2 : Heater | h1.heatingIntensity = h2.heatingIntensity =>  h1 = h2 }
 
 // Every lightbulb is in the lighting accessory category
 fact { all l : Lightbulb | l.category = LightingCategory }
 
 // Every temperature sensor is in the sensor accessory category
 fact { all ts : TemperatureSensor | ts.category = SensorCategory }
-
-// Every smoke sensor is in the sensor accessory category
-fact { all ss : SmokeSensor | ss.category = SensorCategory }
 
 // Every camera is in the camera accessory category
 fact { all c : Camera | c.category = CameraCategory }
@@ -115,11 +116,14 @@ fact { all a : Alarm | a.category = AlarmCategory }
 // Every heater is in the heater accessory category
 fact { all h : Heater| h.category = HeaterCategory }
 
-// Every house has at least one smoke sensor
-fact { all h : House | (some a : h.controller.managedAccessories | a in SmokeSensor)  }
-
 // Every house has exactly one alarm
 fact { all h : House | (one a : h.controller.managedAccessories | a in Alarm)  }
+
+// All cameras are turned on
+fact { all c : Camera | c.state = StateOn }
+
+// All temperature sensors are turned on
+fact { all ts : TemperatureSensor | ts.state = StateOn }
 
 
 // ----------------Asserts---------------- //
@@ -168,12 +172,36 @@ assert HeaterIsInHeaterCategory {
 	all h : Heater | h.category in HeaterCategory
 }
 
-assert HouseContainsAtLeastOneSmokeSensor {
-	all h : House | (some a : h.controller.managedAccessories | a in SmokeSensor)
-}
-
 assert HouseContainsExactlyOneAlarm {
 	all h : House | (one a : h.controller.managedAccessories | a in Alarm)
+}
+
+
+// ----------------Predicates---------------- //
+
+// When temperature gets below 1 in a room r, automatically start heating in the room r
+// 1 is used as the min threshold here to prevent overflow
+pred StartHeating [h1, h2 : Heater, r : Room, ts : TemperatureSensor]  {
+	ts.temperature < 1
+	h1 in r.accessories and ts in r.accessories
+	h2 = h1
+	h2.state = StateOn
+}
+
+// When temperature in a room r gets above 2, automatically stop heating in the room r
+// 2 is used as the max threshold here to prevent overflow
+pred StopHeating [h1, h2 : Heater, r : Room, ts : TemperatureSensor]  {
+	ts.temperature > 2
+	h1 in r.accessories and ts in r.accessories
+	h2 = h1
+	h2.state = StateOff
+}
+
+// If any movements is detected by any camera, turn on alarm
+pred TurnOnAlarm [a1, a2 : Alarm, c : Camera]  {
+	c.isMovementDetected = True
+	a2 = a1
+	a1.state = StateOn
 }
 
 
@@ -188,25 +216,15 @@ assert HouseContainsExactlyOneAlarm {
 //check LightbulbIsInLightingCategory for 10
 //check TemperatureSensorIsInSensorCategory for 10
 //check CameraIsInCameraCategory for 10
-//check HouseContainsAtLeastOneSmokeSensor for 10
 //check HouseContainsExactlyOneAlarm for 10
 //check HeaterIsInHeaterCategory for 10
 
 
-// ----------------Predicates---------------- //
-
-pred addRoom [h : House,  r : Room]  {
-	h.rooms = h.rooms + r
-}
-
-pred addAccessory [h : House, r : Room, a : Accessory] {
-	r.accessories = r.accessories + a
-	h.controller.managedAccessories = h.controller.managedAccessories + a 
-}
-
-
 // ----------------Runs---------------- //
 
+//run StartHeating for 10 but exactly 1 House, 1 Heater, exactly 1 TemperatureSensor
+//run StopHeating for 10 but exactly 1 Heater, exactly 1 TemperatureSensor
+run TurnOnAlarm for 12
 
-run addAccessory for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
-//run addRoom for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
+run {} for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
+

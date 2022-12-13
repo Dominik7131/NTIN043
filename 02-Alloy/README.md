@@ -1,6 +1,7 @@
 # Smart home
 
 - řešení je v souboru [SmartHome.als](SmartHome.als)
+- byl použit nástroj Alloy verze 6.1.0
 
 
 ## Základní popis řešení
@@ -35,5 +36,7 @@
 
 ## Pokročilé použití alloy
 - pro částečné ověření základních invariantů našeho modelu používáme několik assertů a odpovídajících checků
-- model obsahuje i dvě operace, které mění jeho stav: přidání nového pokoje (predikát `addRoom`) a přidání nového chytrého doplňku (predikát `addAccessory`)
-
+- model obsahuje i tři operace pro zachycení dynamického chování
+	- `StartHeating` - pokud v pokoji, ve kterém je tepelný senzor a zároveň topení, klesne teplota pod vymezenou hodnotu, automaticky se spustí topení
+	- `StopHeating` - jako `StartHeating`, ale naopak, když se teplota dostane nad vymezenou hodnotu, automaticky se vypne topení
+	- `TurnOnAlarm` - když libovolná kamera zachytí pohyb, spustí se alarm
