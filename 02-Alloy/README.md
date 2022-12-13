@@ -29,7 +29,7 @@
 ### Accessory
 - `name` - identifikační název daného chytrého doplňku
 - `state` - aktuální stav daného chytrého doplňku (`StateOn` / `StateOff`)
-- `category` - do jaké kategorie doplňků spadá (Př.: kouřový detektor spadá do kategorie SensorCategory)
+- `category` - do jaké kategorie doplňků spadá (Př.: tepelný senzor spadá do kategorie `SensorCategory`)
 
     - seznam všech definovaných kategorií: `LightingCategory`, `SensorCategory`, `CameraCategory`, `AlarmCategory`, `HeaterCategory`
 - některé doplňky mohou navíc obsahovat nějakou hodnotu (Př.: tepelný senzor obsahuje teplotu pokoje, ve kterém se nachází)
