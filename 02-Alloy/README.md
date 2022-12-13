@@ -1,7 +1,7 @@
 # Smart home
 
 - řešení je v souboru [SmartHome.als](SmartHome.als)
-- byl použit nástroj Alloy verze 6.1.0
+- použil jsem Alloy verze 6.1.0
 
 
 ## Základní popis řešení
@@ -11,7 +11,7 @@
 - podrobnější popis viz komentáře v kódu u definic faktů
 
 ## High-level design
-řešení obsahuje tyto základní signatury:
+- řešení obsahuje tyto základní signatury:
 
 ### House
 - `name` - identifikační název daného domu
@@ -28,15 +28,16 @@
 
 ### Accessory
 - `name` - identifikační název daného chytrého doplňku
+- `state` - aktuální stav daného chytrého doplňku (`StateOn` / `StateOff`)
 - `category` - do jaké kategorie doplňků spadá (Př.: kouřový detektor spadá do kategorie SensorCategory)
 
     - seznam všech definovaných kategorií: `LightingCategory`, `SensorCategory`, `CameraCategory`, `AlarmCategory`, `HeaterCategory`
-- některé doplňky mohou navíc obsahovat nějakou hodnotu (Př.: tepelné těleso obsahuje teplotu, na kterou daný pokoj vytápí)
+- některé doplňky mohou navíc obsahovat nějakou hodnotu (Př.: tepelný senzor obsahuje teplotu pokoje, ve kterém se nachází)
 
 
 ## Pokročilé použití alloy
 - pro částečné ověření základních invariantů našeho modelu používáme několik assertů a odpovídajících checků
-- model obsahuje i tři operace pro zachycení dynamického chování
+- model obsahuje i tři operace pro zachycení jeho dynamického chování
 	- `StartHeating` - pokud v pokoji, ve kterém je tepelný senzor a zároveň topení, klesne teplota pod vymezenou hodnotu, automaticky se spustí topení
 	- `StopHeating` - jako `StartHeating`, ale naopak, když se teplota dostane nad vymezenou hodnotu, automaticky se vypne topení
 	- `TurnOnAlarm` - když libovolná kamera zachytí pohyb, spustí se alarm
