@@ -224,7 +224,7 @@ pred TurnOnAlarm [a1, a2 : Alarm, c : Camera]  {
 
 //run StartHeating for 10 but exactly 1 House, 1 Heater, exactly 1 TemperatureSensor
 //run StopHeating for 10 but exactly 1 Heater, exactly 1 TemperatureSensor
-run TurnOnAlarm for 12
+//run TurnOnAlarm for 10
 
 run {} for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
 
