@@ -4,17 +4,17 @@
 
 
 ## Základní popis řešení
-- každý dům obsahuje právě jeden kontroler, který řídí všechny chytré doplňky v daném domě
-- každý dům obsahuje alespoň jednu místnost
+- každý dům (`House`) obsahuje právě jeden kontroler (`Controller`), který řídí všechny chytré doplňky (`Accessory`) v daném domě
+- každý dům obsahuje alespoň jednu místnost (`Room`)
 - každý dům, pokoj, kontroler a doplněk je jednoznačně určen svým jménem
 - podrobnější popis viz komentáře v kódu u definic faktů
 
 ## High-level design
-SmartHome obsahuje tyto základní signatury:
+řešení obsahuje tyto základní signatury:
 
 ### House
 - `name` - identifikační název daného domu
-- `rooms` - množina pokojů v daném domě
+- `rooms` - neprázdná množina pokojů v daném domě
 - `controller` - jednotka spravující všechny chytré doplňky v daném domě
 
 ### Room
@@ -27,13 +27,13 @@ SmartHome obsahuje tyto základní signatury:
 
 ### Accessory
 - `name` - identifikační název daného chytrého doplňku
-- `category` - do jaké kategorie doplňků spadá (Př.: kouřový detektor spadá do kategorie SensorCategory) \
+- `category` - do jaké kategorie doplňků spadá (Př.: kouřový detektor spadá do kategorie SensorCategory)
 
-- seznam všech definovaných kategorií: `LightingCategory`, `SensorCategory`, `CameraCategory`, `AlarmCategory`, `HeaterCategory`
+    - seznam všech definovaných kategorií: `LightingCategory`, `SensorCategory`, `CameraCategory`, `AlarmCategory`, `HeaterCategory`
 - některé doplňky mohou navíc obsahovat nějakou hodnotu (Př.: tepelné těleso obsahuje teplotu, na kterou daný pokoj vytápí)
 
 
 ## Pokročilé použití alloy
-- pro ověření správnosti našeho modelu používáme několik assertů a odpovídajících checků
+- pro částečné ověření správnosti našeho modelu používáme několik assertů a odpovídajících checků
 - model obsahuje i dvě operace, které mění jeho stav: přidání nového pokoje (predikát `addRoom`) a přidání nového chytrého doplňku (predikát `addAccessory`)
 
