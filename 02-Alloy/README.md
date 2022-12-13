@@ -1,7 +1,7 @@
 # Smart home
 
 - řešení je v souboru [SmartHome.als](SmartHome.als)
-- použil jsem Alloy verze 6.1.0
+- použil jsem Alloy ve verzi 6.1.0
 
 
 ## Základní popis řešení
