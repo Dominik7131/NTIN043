@@ -71,13 +71,13 @@ fact { all h : House | all r : Room | all a : Accessory | all c : Controller |
 fact { all a : Accessory | some r : Room | a in r.accessories}
 
 // No accessory is in two rooms at the same time
-fact {all r1 : Room, r2 : Room | (all a : r1.accessories | a in r2.accessories => r1 = r2) }
+fact { all r1 : Room, r2 : Room | (all a : r1.accessories | a in r2.accessories => r1 = r2)  }
 
 // All rooms belong to some house
-fact {all r : Room | some h : House | r in h.rooms}
+fact { all r : Room | some h : House | r in h.rooms }
 
 // Every controller belongs to some house
-fact {all c : Controller | some h : House | c = h.controller }
+fact { all c : Controller | some h : House | c = h.controller }
 
 // Every accessory is managed by some controller
 fact { all a : Accessory | some c : Controller | a in c.managedAccessories }
@@ -86,7 +86,7 @@ fact { all a : Accessory | some c : Controller | a in c.managedAccessories }
 fact { all c : AccessoryCategory | some a : Accessory | a.category = c }
 
 // Every light intensity belongs to some lightbulb
-fact {all lv : LightValue | some l : Lightbulb | l.lightIntensity = lv}
+fact { all lv : LightValue | some l : Lightbulb | l.lightIntensity = lv}
 
 // Every light intensity belongs to a different lightbulb
 fact { all l1 : Lightbulb, l2 : Lightbulb | l1.lightIntensity = l2.lightIntensity =>  l1 = l2 }
@@ -125,23 +125,23 @@ fact { all h : House | (one a : h.controller.managedAccessories | a in Alarm)  }
 // ----------------Asserts---------------- //
 
 assert UniqueHouseNames {
-	all h1: House, h2: House | h1.name = h2.name => h1 = h2
+	all h1 : House, h2 : House | h1.name = h2.name => h1 = h2
 }
 
 assert UniqueRoomNames {
-	all r1: Room, r2: Room | r1.name  = r2.name => r1 = r2
+	all r1 : Room, r2 : Room | r1.name  = r2.name => r1 = r2
 }
 
 assert UniqueControllerNames {
-	all c1: Controller, c2: Controller | c1.name = c2.name => c1 = c2
+	all c1 : Controller, c2: Controller | c1.name = c2.name => c1 = c2
 }
 
 assert UniqueAccessoryNames {
-	all a1: Accessory, a2: Accessory | a1.name = a2.name => a1 = a2
+	all a1 : Accessory, a2: Accessory | a1.name = a2.name => a1 = a2
 }
 
 assert OneControllerPerHouse {
-	all h: House | #h.controller = 1
+	all h : House | #h.controller = 1
 }
 
 assert EveryAccessoryInSomeRoom {
@@ -149,7 +149,7 @@ assert EveryAccessoryInSomeRoom {
 }
 
 assert HouseHasAtLeastOneRoom {
-	all h: House | #h.rooms > 0
+	all h : House | #h.rooms > 0
 }
 
 assert LightbulbIsInLightingCategory {
@@ -195,16 +195,18 @@ assert HouseContainsExactlyOneAlarm {
 
 // ----------------Predicates---------------- //
 
-pred addRoom [h: House,  r: Room]  {
+pred addRoom [h : House,  r : Room]  {
 	h.rooms = h.rooms + r
 }
 
-pred addAccessory [h: House, r: Room, a: Accessory] {
+pred addAccessory [h : House, r : Room, a : Accessory] {
 	r.accessories = r.accessories + a
 	h.controller.managedAccessories = h.controller.managedAccessories + a 
 }
 
 
-// ----------------Run---------------- //
+// ----------------Runs---------------- //
+
 
 run addAccessory for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
+//run addRoom for 14  but exactly 1 House,  exactly 4 Room, exactly 8 Accessory
