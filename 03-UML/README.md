@@ -23,6 +23,6 @@ II) Věk každé osoby je nezáporný \
 context Person \
 inv: self.age >= 0
 
-III) Každý film od nějakého režíséra má neprázdný název \
+III) Filmy každého režíséra mají neprázdný název \
 context Director \
 self.directed->forall(m | m.name != "")
