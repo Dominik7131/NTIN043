@@ -15,14 +15,20 @@ III) Redefinice/restrikce
 
 # OCL
 
-I) Datum začátku natáčení filmu není starší než datum dokončení tohoto filmu \
-context Movie \
+I) Datum začátku natáčení filmu není starší než datum dokončení tohoto filmu
+```
+context Movie
 inv: self.started <= self.finished
+```
 
-II) Věk každé osoby je nezáporný \
-context Person \
+II) Věk každé osoby je nezáporný
+```
+context Person
 inv: self.age >= 0
+```
 
-III) Filmy každého režíséra mají neprázdný název \
-context Director \
+III) Filmy každého režíséra mají neprázdný název
+```
+context Director
 self.directed->forall(m | m.name != "")
+```
