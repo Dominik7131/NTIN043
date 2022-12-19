@@ -1,4 +1,4 @@
-#UML
+# UML
 
 Vytvořil jsem jednoduchou filmovou databázi obsahující 5 tříd: Film (movie), Osoba (Person), Režisér (Director), Herec (Actor) a Filmová postava (Movie character).
 
@@ -13,7 +13,7 @@ II) Specializace/generalizace
 III) Redefinice/restrikce
 - třída Actor dědí z třídy osoba a v rámci redefinice zavádí novou property `totalRoles` = celkový počet rolí, ve kterých daný herec hrál
 
-#OCL
+# OCL
 
 I) Datum začátku natáčení filmu není starší než datum dokončení tohoto filmu \
 context Movie \
