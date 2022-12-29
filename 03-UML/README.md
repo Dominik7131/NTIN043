@@ -11,7 +11,7 @@ II) Specializace/generalizace
 - z generické třídy Person dědí třídy Director, Actor a Movie character
 
 III) Redefinice/restrikce property
-- ve třídě Director property `name : DirectorName` redefinuje property `name : String` ve třídě Person
+- ve třídě Director property `name : DirectorName` redefinuje property `name : String` ze třídy Person
 
 # OCL
 
