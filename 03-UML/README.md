@@ -10,8 +10,8 @@ I) Ternární vztah
 II) Specializace/generalizace
 - z generické třídy Person dědí třídy Director, Actor a Movie character
 
-III) Redefinice/restrikce
-- třída Actor dědí z třídy osoba a v rámci redefinice zavádí novou property `totalRoles` = celkový počet rolí, ve kterých daný herec hrál
+III) Redefinice/restrikce property
+- ve třídě Director property `name : DirectorName` redefinuje property `name : String` ve třídě Person
 
 # OCL
 
@@ -30,5 +30,5 @@ inv: self.age >= 0
 III) Filmy každého režíséra mají neprázdný název
 ```
 context Director
-self.directed->forall(m | m.name != "")
+inv: self.directed->forall(m | m.name != "")
 ```
