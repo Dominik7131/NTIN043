@@ -1,6 +1,6 @@
 # UML
 
-Vytvořil jsem jednoduchou filmovou databázi obsahující 5 tříd: Film (Movie), Osoba (Person), Režisér (Director), Herec (Actor) a Filmová postava (Movie character).
+Vytvořil jsem model jednoduché filmové databáze obsahující 5 tříd: Film (Movie), Osoba (Person), Režisér (Director), Herec (Actor) a Filmová postava (Movie character).
 
 UML diagram je v souboru [UML.png](UML.png): ![UML.png](UML.png)
 
