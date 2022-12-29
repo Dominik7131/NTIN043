@@ -15,6 +15,8 @@ III) Redefinice/restrikce property
 
 # OCL
 
+Alespoň 1 invariant a alespoň 1 iterátor:
+
 I) Datum začátku natáčení filmu není starší než datum dokončení tohoto filmu
 ```
 context Movie
