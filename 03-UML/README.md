@@ -2,7 +2,7 @@
 
 Vytvořil jsem jednoduchou filmovou databázi obsahující 5 tříd: Film (movie), Osoba (Person), Režisér (Director), Herec (Actor) a Filmová postava (Movie character).
 
-UML diagram je v souboru [UML.png](UML.png): ![UML.png](UML.png).
+UML diagram je v souboru [UML.png](UML.png): ![UML.png](UML.png)
 
 I) Ternární vztah
 - ternární vztah je mezi filmem, hercem a postavou, kterou v daném filmu daný herec hrál
